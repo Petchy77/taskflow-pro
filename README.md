@@ -6,7 +6,6 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen)](https://spring.io/projects/spring-boot)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://www.mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 ## 📋 Overview
 
@@ -36,7 +35,7 @@ TaskFlow Pro is a full-stack task management platform built to demonstrate enter
 
 ## 🏗️ Architecture
 
-\`\`\`
+```
 ┌─────────────────┐     ┌─────────────────┐
 │  Angular SPA    │     │  React Admin    │
 │  (Port 4200)    │     │  (Port 5173)    │
@@ -52,11 +51,11 @@ TaskFlow Pro is a full-stack task management platform built to demonstrate enter
          │   - Global Exception  │
          └─────┬───────────┬─────┘
                │           │
-        ┌──────▼─────┐  ┌─▼──────┐
+        ┌──────▼─────┐  ┌──▼─────┐
         │  MySQL 8   │  │ Redis 7│
         │  (3306)    │  │ (6379) │
         └────────────┘  └────────┘
-\`\`\`
+```
 
 ## 🏃 Quick Start
 
@@ -68,9 +67,9 @@ TaskFlow Pro is a full-stack task management platform built to demonstrate enter
 
 ### Setup
 
-\`\`\`bash
+```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/taskflow-pro.git
+git clone https://github.com/Petchy77/taskflow-pro.git
 cd taskflow-pro
 
 # Start infrastructure
@@ -79,61 +78,59 @@ docker compose up -d
 # Run backend
 cd backend
 mvn spring-boot:run
+```
 
-# Backend will be available at http://localhost:8080/api
-# phpMyAdmin at http://localhost:8081
-\`\`\`
+Backend will be available at `http://localhost:8080/api`
+phpMyAdmin at `http://localhost:8081`
 
 ### Default Credentials
 
-| Username | Password | Role |
-|----------|----------|------|
+| Username | Password   | Role  |
+|----------|------------|-------|
 | `admin`  | `admin123` | ADMIN |
-| `petch`  | `petch123` | USER |
+| `petch`  | `petch123` | USER  |
 
-## 📚 API Documentation
+## 📚 API Endpoints
 
 ### Authentication
 
-\`\`\`bash
-# Register
+```bash
+# Register new user
 POST /api/auth/register
+Content-Type: application/json
+
 {
   "username": "newuser",
   "email": "user@example.com",
   "password": "password123",
   "fullName": "New User"
 }
+```
 
+```bash
 # Login
 POST /api/auth/login
+Content-Type: application/json
+
 {
   "username": "petch",
   "password": "petch123"
 }
-
-# Response
-{
-  "accessToken": "eyJhbGciOiJIUzM4NCJ9...",
-  "tokenType": "Bearer",
-  "expiresIn": 86400000,
-  "user": { ... }
-}
-\`\`\`
+```
 
 ### Protected Endpoints
 
-\`\`\`bash
+```bash
 # Get current user profile
 GET /api/users/me
-Authorization: Bearer <token>
-\`\`\`
+Authorization: Bearer <your-jwt-token>
+```
 
 ## ✅ Features
 
 ### Implemented
 - [x] User registration with BCrypt password hashing
-- [x] JWT-based stateless authentication
+- [x] JWT-based stateless authentication (HS384)
 - [x] Role-based access control (USER/ADMIN)
 - [x] Bean validation with detailed error messages
 - [x] Global exception handling
@@ -158,46 +155,46 @@ Authorization: Bearer <token>
 
 ## 🧪 Testing
 
-\`\`\`bash
+```bash
 # Run unit tests
 cd backend
 mvn test
 
 # Run with coverage
 mvn test jacoco:report
-\`\`\`
+```
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 taskflow-pro/
-├── backend/                    # Spring Boot application
+├── backend/                      # Spring Boot application
 │   ├── src/main/java/
 │   │   └── com/taskflow/
-│   │       ├── config/         # Security, CORS configurations
-│   │       ├── controller/     # REST endpoints
-│   │       ├── dto/            # Request/Response DTOs
-│   │       ├── entity/         # JPA entities
-│   │       ├── exception/      # Custom exceptions
-│   │       ├── repository/     # JPA repositories
-│   │       ├── security/       # JWT components
-│   │       └── service/        # Business logic
+│   │       ├── config/           # Security, CORS configurations
+│   │       ├── controller/       # REST endpoints
+│   │       ├── dto/              # Request/Response DTOs
+│   │       ├── entity/           # JPA entities
+│   │       ├── exception/        # Custom exceptions
+│   │       ├── repository/       # JPA repositories
+│   │       ├── security/         # JWT components
+│   │       └── service/          # Business logic
 │   └── src/main/resources/
-│       ├── db/migration/       # Flyway SQL scripts
-│       └── application.yml     # Configuration
-├── frontend-angular/           # Angular SPA (TBD)
-├── frontend-admin/             # React admin (TBD)
-├── k8s/                        # Kubernetes manifests (TBD)
-├── docs/                       # Documentation
-├── .github/workflows/          # CI/CD pipelines (TBD)
-└── docker-compose.yml          # Dev infrastructure
-\`\`\`
+│       ├── db/migration/         # Flyway SQL scripts
+│       └── application.yml       # Configuration
+├── frontend-angular/             # Angular SPA (TBD)
+├── frontend-admin/               # React admin (TBD)
+├── k8s/                          # Kubernetes manifests (TBD)
+├── docs/                         # Documentation
+├── .github/workflows/            # CI/CD pipelines (TBD)
+└── docker-compose.yml            # Dev infrastructure
+```
 
 ## 👤 Author
 
 **Natawat S. (Petch)**
 
-Full-Stack Developer | IoT Enthusiast | Bangkok, Thailand
+Full-Stack Developer | Bangkok, Thailand
 
 ---
 
