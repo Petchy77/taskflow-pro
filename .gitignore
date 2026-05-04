@@ -1,0 +1,19 @@
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.log
+logs/
+.env
+.env.local
+*.env
+**/target/
+**/dist/
+**/build/
+**/node_modules/
+*.sqlite
+*.db
+
+# VS Code Java extension auto-generated
+.github/java-upgrade/
