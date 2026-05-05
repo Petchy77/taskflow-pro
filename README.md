@@ -1,17 +1,29 @@
 # 🚀 TaskFlow Pro
 
-> Production-ready task management platform showcasing modern full-stack development with enterprise-grade DevOps practices.
+> Production-ready, full-stack task management platform with real-time collaboration. Built to demonstrate enterprise-grade development practices across the complete software development lifecycle.
 
 [![Backend CI](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://www.java.com)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen)](https://spring.io/projects/spring-boot)
+[![Angular](https://img.shields.io/badge/Angular-18-red)](https://angular.dev)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://www.mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue)](https://kubernetes.io/)
 
 ## 📋 Overview
 
-TaskFlow Pro is a full-stack task management platform built to demonstrate enterprise-grade development practices. The project covers the complete software development lifecycle: from database design and backend API development to frontend UI, containerization, and CI/CD deployment.
+TaskFlow Pro is a complete full-stack task management platform with real-time collaboration features. The project demonstrates end-to-end software development practices: from database design and JWT-secured RESTful APIs to Angular frontend with drag-and-drop Kanban board, WebSocket real-time updates, comprehensive testing, and production-ready DevOps configuration.
+
+## ✨ Key Features
+
+- 🔐 **JWT Authentication** with BCrypt password hashing and role-based access (USER/ADMIN)
+- 📋 **Task Management** — Create, update, delete tasks with project assignment
+- 🎯 **Kanban Board** with HTML5 drag-and-drop status updates
+- 🔔 **Real-time Notifications** — WebSocket broadcasting for collaborative updates
+- 🔍 **Advanced Filtering** — JPA Specification API for dynamic queries
+- 📊 **Dashboard** — Live task statistics and recent activity
+- 💬 **Toast Notifications** — User-friendly feedback system
+- 📱 **Responsive UI** — Modern design with Tailwind CSS
 
 ## 🛠️ Tech Stack
 
@@ -19,71 +31,82 @@ TaskFlow Pro is a full-stack task management platform built to demonstrate enter
 - **Java 21** with Spring Boot 3.3
 - **Spring Security** with JWT authentication (HS384)
 - **Spring Data JPA** with Hibernate ORM
+- **Spring WebSocket** with STOMP protocol
 - **Flyway** for database migration
 - **MySQL 8** as primary database
 - **Redis 7** for caching
+- **JUnit 5 + Mockito + AssertJ** for testing
 - **Maven** for build management
 - **Lombok** for boilerplate reduction
 
-### Frontend (In Progress)
-- **Angular 18** for main application
-- **React 18** for admin panel
+### Frontend
+- **Angular 18** with standalone components
+- **TypeScript 5.5** with strict mode
+- **Tailwind CSS 3** for styling
+- **RxJS 7** for reactive programming
+- **Signal-based state management**
+- **STOMP.js + SockJS** for WebSocket
+- **Lucide Angular** for icons
 
-### DevOps (Planned)
-- **Docker & Docker Compose** for containerization
-- **Kubernetes** for orchestration
-- **GitHub Actions** for CI/CD
-- **Prometheus + Grafana** for monitoring
+### DevOps
+- **Docker** with multi-stage builds (250MB image)
+- **Docker Compose** for local development
+- **Kubernetes** manifests with HPA, StatefulSet, and Ingress
+- **GitHub Actions** for CI/CD pipeline
+- **JaCoCo** for code coverage analysis
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐     ┌─────────────────┐
-│  Angular SPA    │     │  React Admin    │
-│  (Port 4200)    │     │  (Port 5173)    │
-└────────┬────────┘     └────────┬────────┘
-         │                       │
-         └───────────┬───────────┘
-                     │ REST API
-         ┌───────────▼───────────┐
-         │   Spring Boot API     │
-         │   (Port 8080)         │
-         │   - JWT Auth          │
-         │   - Bean Validation   │
-         │   - Global Exception  │
-         └─────┬───────────┬─────┘
-               │           │
-        ┌──────▼─────┐  ┌──▼─────┐
-        │  MySQL 8   │  │ Redis 7│
-        │  (3306)    │  │ (6379) │
-        └────────────┘  └────────┘
+┌──────────────────────────────────────────┐
+│  Angular SPA (Port 4200)                 │
+│  • Login, Dashboard, Tasks, Kanban       │
+│  • WebSocket subscription                │
+└────────────┬─────────────────────────────┘
+             │ REST + WebSocket
+┌────────────▼─────────────────────────────┐
+│  Spring Boot API (Port 8080)             │
+│  • JWT Authentication                    │
+│  • Task & Project CRUD                   │
+│  • WebSocket broadcasting                │
+│  • Bean Validation                       │
+│  • Global Exception Handler              │
+└─────┬──────────────────────────┬─────────┘
+      │                          │
+┌─────▼──────┐            ┌──────▼─────┐
+│  MySQL 8   │            │  Redis 7   │
+│  (3306)    │            │  (6379)    │
+└────────────┘            └────────────┘
 ```
 
 ## 🏃 Quick Start
 
 ### Prerequisites
-- Java 21+
 - Docker & Docker Compose
+- Node.js 20+ (for frontend dev)
+- Java 21+ (for backend dev)
 - Maven 3.9+
-- Node.js 20+ (for frontend)
 
-### Setup
+### Run Everything with Docker (Recommended)
 
 ```bash
 # Clone repository
 git clone https://github.com/Petchy77/taskflow-pro.git
 cd taskflow-pro
 
-# Start infrastructure
+# Start all services (MySQL, Redis, Backend, phpMyAdmin)
 docker compose up -d
 
-# Run backend
-cd backend
-mvn spring-boot:run
+# Run frontend
+cd frontend-angular
+npm install
+ng serve --port 4200
 ```
 
-Backend will be available at `http://localhost:8080/api`
-phpMyAdmin at `http://localhost:8081`
+**Access points:**
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:8080/api
+- phpMyAdmin: http://localhost:8081
 
 ### Default Credentials
 
@@ -95,108 +118,165 @@ phpMyAdmin at `http://localhost:8081`
 ## 📚 API Endpoints
 
 ### Authentication
+- `POST /api/auth/register` — Register new user
+- `POST /api/auth/login` — Login and receive JWT
+- `GET  /api/users/me` — Get current user profile
 
-```bash
-# Register new user
-POST /api/auth/register
-Content-Type: application/json
+### Projects
+- `GET    /api/projects` — List user's projects
+- `POST   /api/projects` — Create new project
+- `GET    /api/projects/{id}` — Get project details
+- `PUT    /api/projects/{id}` — Update project
+- `DELETE /api/projects/{id}` — Delete project
 
-{
-  "username": "newuser",
-  "email": "user@example.com",
-  "password": "password123",
-  "fullName": "New User"
-}
-```
+### Tasks
+- `GET    /api/tasks` — List tasks (filterable by status, priority, projectId)
+- `POST   /api/tasks` — Create new task
+- `GET    /api/tasks/{id}` — Get task details
+- `PUT    /api/tasks/{id}` — Update task
+- `PATCH  /api/tasks/{id}/status` — Update task status (broadcasts WebSocket event)
+- `DELETE /api/tasks/{id}` — Delete task
 
-```bash
-# Login
-POST /api/auth/login
-Content-Type: application/json
+### WebSocket
+- `WS /api/ws` — STOMP endpoint
+- Subscribe `/topic/tasks` — Receive real-time task updates
 
-{
-  "username": "petch",
-  "password": "petch123"
-}
-```
+## ✅ Implementation Status
 
-### Protected Endpoints
-
-```bash
-# Get current user profile
-GET /api/users/me
-Authorization: Bearer <your-jwt-token>
-```
-
-## ✅ Features
-
-### Implemented
+### ✅ Completed
 - [x] User registration with BCrypt password hashing
 - [x] JWT-based stateless authentication (HS384)
 - [x] Role-based access control (USER/ADMIN)
+- [x] Project and Task CRUD APIs
+- [x] Pagination, sorting, and filtering with JPA Specification
 - [x] Bean validation with detailed error messages
 - [x] Global exception handling
 - [x] CORS configuration for SPA clients
 - [x] Database migration with Flyway
 - [x] Sample data seeding for development
+- [x] **Real-time notifications via WebSocket**
+- [x] **Angular 18 frontend** (Login, Dashboard, Tasks, Kanban)
+- [x] **HTML5 drag-and-drop Kanban board**
+- [x] **Toast notification system**
+- [x] **30 unit tests with 78% service coverage**
+- [x] **Docker production builds (multi-stage, 250MB)**
+- [x] **Kubernetes deployment manifests**
+- [x] **GitHub Actions CI/CD pipeline**
 
-### In Progress
-- [ ] Project and Task CRUD APIs
-- [ ] Pagination, sorting, and filtering
-- [ ] Real-time notifications via WebSocket
-
-### Planned
-- [ ] Angular 18 frontend
+### ⏳ Planned
 - [ ] React admin dashboard
-- [ ] Unit and integration tests
-- [ ] Docker production builds
-- [ ] Kubernetes deployment manifests
-- [ ] GitHub Actions CI/CD pipeline
 - [ ] Prometheus + Grafana monitoring
-- [ ] Cloud deployment (AWS/Azure)
+- [ ] Cloud deployment (Railway/AWS)
 
 ## 🧪 Testing
 
 ```bash
-# Run unit tests
 cd backend
+
+# Run unit tests
 mvn test
 
-# Run with coverage
+# Generate coverage report
 mvn test jacoco:report
+
+# View HTML report
+open target/site/jacoco/index.html
 ```
+
+**Coverage Highlights:**
+- Service layer: **78%** (business logic)
+- Mapper layer: **91%**
+- Total: **56%**
+
+## 🐳 Docker Deployment
+
+```bash
+# Build and start full stack
+docker compose up -d --build
+
+# Check status
+docker compose ps
+
+# View logs
+docker compose logs -f backend
+```
+
+## ☸️ Kubernetes Deployment
+
+```bash
+# Apply all manifests
+kubectl apply -f k8s/
+
+# Check status
+kubectl get all -n taskflow
+
+# Port-forward for testing
+kubectl port-forward -n taskflow svc/backend 8080:8080
+```
+
+See [k8s/README.md](k8s/README.md) for detailed deployment guide.
 
 ## 📁 Project Structure
 
 ```
 taskflow-pro/
 ├── backend/                      # Spring Boot application
-│   ├── src/main/java/
-│   │   └── com/taskflow/
-│   │       ├── config/           # Security, CORS configurations
-│   │       ├── controller/       # REST endpoints
-│   │       ├── dto/              # Request/Response DTOs
-│   │       ├── entity/           # JPA entities
-│   │       ├── exception/        # Custom exceptions
-│   │       ├── repository/       # JPA repositories
-│   │       ├── security/         # JWT components
-│   │       └── service/          # Business logic
-│   └── src/main/resources/
-│       ├── db/migration/         # Flyway SQL scripts
-│       └── application.yml       # Configuration
-├── frontend-angular/             # Angular SPA (TBD)
-├── frontend-admin/               # React admin (TBD)
-├── k8s/                          # Kubernetes manifests (TBD)
-├── docs/                         # Documentation
-├── .github/workflows/            # CI/CD pipelines (TBD)
+│   ├── src/main/java/com/taskflow/
+│   │   ├── config/               # Security, WebSocket, CORS
+│   │   ├── controller/           # REST endpoints
+│   │   ├── dto/                  # Request/Response DTOs + Events
+│   │   ├── entity/               # JPA entities
+│   │   ├── exception/            # Custom exceptions
+│   │   ├── mapper/               # DTO mappers
+│   │   ├── repository/           # JPA repositories
+│   │   ├── security/             # JWT components
+│   │   └── service/              # Business logic
+│   ├── src/test/java/            # Unit tests (30 tests)
+│   ├── src/main/resources/
+│   │   ├── db/migration/         # Flyway SQL scripts
+│   │   └── application.yml       # Configuration
+│   └── Dockerfile                # Multi-stage build
+├── frontend-angular/             # Angular 18 SPA
+│   └── src/app/
+│       ├── core/
+│       │   ├── guards/           # Auth guards
+│       │   ├── interceptors/     # JWT interceptor
+│       │   ├── models/           # TypeScript interfaces
+│       │   └── services/         # Auth, API, WebSocket, Toast
+│       ├── features/
+│       │   ├── auth/login/       # Login page
+│       │   ├── dashboard/        # Stats overview
+│       │   └── tasks/
+│       │       ├── task-list/    # Filterable list view
+│       │       └── kanban-board/ # Drag-and-drop board
+│       └── shared/
+│           ├── components/       # Reusable components
+│           └── layout/           # App layout
+├── k8s/                          # Kubernetes manifests
+├── .github/workflows/            # CI/CD pipelines
 └── docker-compose.yml            # Dev infrastructure
 ```
+
+## 🎯 Highlights for Recruiters
+
+This portfolio demonstrates:
+
+- **Full-stack expertise** — Backend (Spring Boot) + Frontend (Angular) + Database (MySQL)
+- **Modern Java practices** — Records, Optional, Stream API, Lombok
+- **Security best practices** — JWT, BCrypt, CORS, SQL injection prevention
+- **Test-driven development** — JUnit 5, Mockito, AssertJ with high coverage
+- **DevOps fluency** — Docker multi-stage, Kubernetes manifests, CI/CD
+- **Real-time systems** — WebSocket with STOMP for collaborative updates
+- **Modern frontend patterns** — Standalone components, Signals, Functional guards
+- **Clean architecture** — Layered design with clear separation of concerns
 
 ## 👤 Author
 
 **Natawat S. (Petch)**
 
 Full-Stack Developer | Bangkok, Thailand
+
+🔗 [GitHub: @Petchy77](https://github.com/Petchy77)
 
 ---
 
