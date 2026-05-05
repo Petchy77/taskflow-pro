@@ -2,10 +2,12 @@
 
 > Production-ready task management platform showcasing modern full-stack development with enterprise-grade DevOps practices.
 
+[![Backend CI](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://www.java.com)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen)](https://spring.io/projects/spring-boot)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://www.mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue)](https://kubernetes.io/)
 
 ## 📋 Overview
 
