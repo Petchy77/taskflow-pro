@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { LucideAngularModule, LayoutDashboard, ListTodo, LogOut } from 'lucide-angular';
+import { LucideAngularModule, LayoutDashboard, ListTodo, LogOut, Kanban } from 'lucide-angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -16,6 +16,7 @@ export class MainLayoutComponent {
 
   protected DashboardIcon = LayoutDashboard;
   protected TasksIcon = ListTodo;
+  protected BoardIcon = Kanban;
   protected LogOutIcon = LogOut;
 
   user = this.authService.currentUser;
