@@ -1,0 +1,27 @@
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Test reports
+**/jacoco-it/
+**/jacoco-ut/
+
+# Git
+.git/
+.gitignore
+
+# Docs (no need in image)
+HELP.md
+README.md
