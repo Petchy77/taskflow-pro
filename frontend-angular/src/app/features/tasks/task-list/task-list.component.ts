@@ -1,15 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule, Filter, RefreshCw } from 'lucide-angular';
+import { LucideAngularModule, Filter, RefreshCw, Plus } from 'lucide-angular';
 
 import { ApiService } from '../../../core/services/api.service';
 import { Task, TaskStatus, Priority } from '../../../core/models/task.model';
+import { TaskModalComponent } from '../../../shared/components/task-modal/task-modal.component';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule, TaskModalComponent],
   templateUrl: './task-list.component.html'
 })
 export class TaskListComponent implements OnInit {
@@ -17,9 +18,11 @@ export class TaskListComponent implements OnInit {
 
   protected FilterIcon = Filter;
   protected RefreshIcon = RefreshCw;
+  protected PlusIcon = Plus;
 
   tasks = signal<Task[]>([]);
   isLoading = signal(true);
+  isModalOpen = signal(false);
 
   statusFilter: TaskStatus | '' = '';
   priorityFilter: Priority | '' = '';
@@ -58,6 +61,18 @@ export class TaskListComponent implements OnInit {
         );
       }
     });
+  }
+
+  openCreateModal(): void {
+    this.isModalOpen.set(true);
+  }
+
+  closeCreateModal(): void {
+    this.isModalOpen.set(false);
+  }
+
+  onTaskCreated(): void {
+    this.loadTasks();
   }
 
   statusBadgeClass(status: string): string {

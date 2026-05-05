@@ -4,12 +4,20 @@
       <h1 class="text-3xl font-bold text-gray-900">Tasks</h1>
       <p class="text-gray-600 mt-1">{{ tasks().length }} tasks total</p>
     </div>
-    <button
-      (click)="loadTasks()"
-      class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-      <lucide-icon [img]="RefreshIcon" [size]="16" />
-      <span class="text-sm font-medium">Refresh</span>
-    </button>
+    <div class="flex items-center gap-3">
+      <button
+        (click)="loadTasks()"
+        class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+        <lucide-icon [img]="RefreshIcon" [size]="16" />
+        <span class="text-sm font-medium">Refresh</span>
+      </button>
+      <button
+        (click)="openCreateModal()"
+        class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition shadow-sm">
+        <lucide-icon [img]="PlusIcon" [size]="16" />
+        <span class="text-sm font-medium">New Task</span>
+      </button>
+    </div>
   </div>
 
   <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
@@ -52,7 +60,7 @@
     } @else if (tasks().length === 0) {
       <div class="p-12 text-center">
         <p class="text-gray-500 mb-2">No tasks found</p>
-        <p class="text-sm text-gray-400">Try adjusting your filters</p>
+        <p class="text-sm text-gray-400">Try adjusting your filters or create a new task</p>
       </div>
     } @else {
       <div class="divide-y divide-gray-100">
@@ -99,3 +107,8 @@
     }
   </div>
 </div>
+
+<app-task-modal
+  [isOpen]="isModalOpen()"
+  (closeModal)="closeCreateModal()"
+  (taskCreated)="onTaskCreated()" />
