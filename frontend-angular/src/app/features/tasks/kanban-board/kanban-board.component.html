@@ -6,75 +6,169 @@
     </div>
     <button
       (click)="openCreateModal()"
-      class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition shadow-sm">
+      class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-sm">
       <lucide-icon [img]="PlusIcon" [size]="16" />
       <span class="text-sm font-medium">New Task</span>
     </button>
   </div>
 
   @if (isLoading()) {
-    <div class="flex-1 flex items-center justify-center text-gray-500">
-      Loading board...
-    </div>
+    <div class="flex-1 flex items-center justify-center text-gray-500">Loading board...</div>
   } @else {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 flex-1 overflow-hidden">
-      @for (column of columns; track column.id) {
-        <div class="bg-gray-50 rounded-xl p-4 flex flex-col overflow-hidden">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <h3 class="font-semibold text-gray-900">{{ column.title }}</h3>
-              <span [class]="column.bgColor + ' ' + column.color"
-                    class="text-xs font-medium px-2 py-0.5 rounded-full">
-                {{ getColumnTasks(column.id).length }}
-              </span>
-            </div>
-          </div>
 
-          <div
-            cdkDropList
-            [id]="column.id"
-            [cdkDropListData]="getColumnTasks(column.id)"
-            [cdkDropListConnectedTo]="['TODO', 'IN_PROGRESS', 'REVIEW', 'DONE']"
-            (cdkDropListDropped)="onDrop($event, column.id)"
-            class="flex-1 space-y-3 overflow-y-auto min-h-[100px]">
-
-            @for (task of getColumnTasks(column.id); track task.id) {
-              <div
-                cdkDrag
-                class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-move hover:shadow-md transition">
-
-                <div class="flex items-start justify-between gap-2 mb-2">
-                  <h4 class="font-medium text-gray-900 text-sm flex-1"
-                      [class.line-through]="task.status === 'DONE'">
-                    {{ task.title }}
-                  </h4>
-                  <span [class]="priorityBadgeClass(task.priority)"
-                        class="text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
-                    {{ task.priority }}
-                  </span>
-                </div>
-
-                @if (task.description) {
-                  <p class="text-xs text-gray-600 mb-2 line-clamp-2">
-                    {{ task.description }}
-                  </p>
-                }
-
-                <div class="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
-                  <span>📁 {{ task.project.name }}</span>
-                  @if (task.dueDate) {
-                    <span>📅 {{ task.dueDate }}</span>
-                  }
-                </div>
-              </div>
-            } @empty {
-              <div class="text-center py-8 text-xs text-gray-400">
-                Drop tasks here
-              </div>
-            }
-          </div>
+      <!-- TO DO Column -->
+      <div class="bg-gray-50 rounded-xl p-4 flex flex-col overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-semibold text-gray-900">To Do</h3>
+          <span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-0.5 rounded-full">
+            {{ todoTasks().length }}
+          </span>
         </div>
-      }
+        <div
+          cdkDropList
+          id="TODO"
+          [cdkDropListData]="todoTasks()"
+          [cdkDropListConnectedTo]="['IN_PROGRESS', 'REVIEW', 'DONE']"
+          (cdkDropListDropped)="onDrop($event, 'TODO')"
+          class="flex-1 space-y-3 overflow-y-auto min-h-[100px]">
+          @if (todoTasks().length === 0) {
+            <div class="text-center py-8 text-xs text-gray-400">Drop tasks here</div>
+          }
+          @for (task of todoTasks(); track task.id) {
+            <div cdkDrag class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-move hover:shadow-md">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h4 class="font-medium text-gray-900 text-sm flex-1">{{ task.title }}</h4>
+                <span [class]="priorityBadgeClass(task.priority)" class="text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {{ task.priority }}
+                </span>
+              </div>
+              @if (task.description) {
+                <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ task.description }}</p>
+              }
+              <div class="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+                <span>📁 {{ task.project.name }}</span>
+                @if (task.dueDate) { <span>📅 {{ task.dueDate }}</span> }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- IN PROGRESS Column -->
+      <div class="bg-gray-50 rounded-xl p-4 flex flex-col overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-semibold text-gray-900">In Progress</h3>
+          <span class="bg-yellow-100 text-yellow-700 text-xs font-medium px-2 py-0.5 rounded-full">
+            {{ inProgressTasks().length }}
+          </span>
+        </div>
+        <div
+          cdkDropList
+          id="IN_PROGRESS"
+          [cdkDropListData]="inProgressTasks()"
+          [cdkDropListConnectedTo]="['TODO', 'REVIEW', 'DONE']"
+          (cdkDropListDropped)="onDrop($event, 'IN_PROGRESS')"
+          class="flex-1 space-y-3 overflow-y-auto min-h-[100px]">
+          @if (inProgressTasks().length === 0) {
+            <div class="text-center py-8 text-xs text-gray-400">Drop tasks here</div>
+          }
+          @for (task of inProgressTasks(); track task.id) {
+            <div cdkDrag class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-move hover:shadow-md">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h4 class="font-medium text-gray-900 text-sm flex-1">{{ task.title }}</h4>
+                <span [class]="priorityBadgeClass(task.priority)" class="text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {{ task.priority }}
+                </span>
+              </div>
+              @if (task.description) {
+                <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ task.description }}</p>
+              }
+              <div class="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+                <span>📁 {{ task.project.name }}</span>
+                @if (task.dueDate) { <span>📅 {{ task.dueDate }}</span> }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- REVIEW Column -->
+      <div class="bg-gray-50 rounded-xl p-4 flex flex-col overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-semibold text-gray-900">Review</h3>
+          <span class="bg-purple-100 text-purple-700 text-xs font-medium px-2 py-0.5 rounded-full">
+            {{ reviewTasks().length }}
+          </span>
+        </div>
+        <div
+          cdkDropList
+          id="REVIEW"
+          [cdkDropListData]="reviewTasks()"
+          [cdkDropListConnectedTo]="['TODO', 'IN_PROGRESS', 'DONE']"
+          (cdkDropListDropped)="onDrop($event, 'REVIEW')"
+          class="flex-1 space-y-3 overflow-y-auto min-h-[100px]">
+          @if (reviewTasks().length === 0) {
+            <div class="text-center py-8 text-xs text-gray-400">Drop tasks here</div>
+          }
+          @for (task of reviewTasks(); track task.id) {
+            <div cdkDrag class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-move hover:shadow-md">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h4 class="font-medium text-gray-900 text-sm flex-1">{{ task.title }}</h4>
+                <span [class]="priorityBadgeClass(task.priority)" class="text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {{ task.priority }}
+                </span>
+              </div>
+              @if (task.description) {
+                <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ task.description }}</p>
+              }
+              <div class="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+                <span>📁 {{ task.project.name }}</span>
+                @if (task.dueDate) { <span>📅 {{ task.dueDate }}</span> }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- DONE Column -->
+      <div class="bg-gray-50 rounded-xl p-4 flex flex-col overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-semibold text-gray-900">Done</h3>
+          <span class="bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full">
+            {{ doneTasks().length }}
+          </span>
+        </div>
+        <div
+          cdkDropList
+          id="DONE"
+          [cdkDropListData]="doneTasks()"
+          [cdkDropListConnectedTo]="['TODO', 'IN_PROGRESS', 'REVIEW']"
+          (cdkDropListDropped)="onDrop($event, 'DONE')"
+          class="flex-1 space-y-3 overflow-y-auto min-h-[100px]">
+          @if (doneTasks().length === 0) {
+            <div class="text-center py-8 text-xs text-gray-400">Drop tasks here</div>
+          }
+          @for (task of doneTasks(); track task.id) {
+            <div cdkDrag class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 cursor-move hover:shadow-md">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h4 class="font-medium text-gray-900 text-sm flex-1 line-through">{{ task.title }}</h4>
+                <span [class]="priorityBadgeClass(task.priority)" class="text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {{ task.priority }}
+                </span>
+              </div>
+              @if (task.description) {
+                <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ task.description }}</p>
+              }
+              <div class="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+                <span>📁 {{ task.project.name }}</span>
+                @if (task.dueDate) { <span>📅 {{ task.dueDate }}</span> }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
     </div>
   }
 </div>
