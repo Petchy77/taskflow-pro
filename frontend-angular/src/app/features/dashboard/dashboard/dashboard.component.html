@@ -1,0 +1,83 @@
+<div class="p-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">
+      Welcome back, {{ user()?.fullName }} 👋
+    </h1>
+    <p class="text-gray-600 mt-1">Here's what's happening with your tasks today.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+          <lucide-icon [img]="TasksIcon" class="text-blue-600" [size]="20" />
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-900">{{ stats().total }}</p>
+      <p class="text-sm text-gray-600 mt-1">Total Tasks</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center">
+          <lucide-icon [img]="ClockIcon" class="text-yellow-600" [size]="20" />
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-900">{{ stats().inProgress }}</p>
+      <p class="text-sm text-gray-600 mt-1">In Progress</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+          <lucide-icon [img]="CheckIcon" class="text-green-600" [size]="20" />
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-900">{{ stats().done }}</p>
+      <p class="text-sm text-gray-600 mt-1">Completed</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+          <lucide-icon [img]="AlertIcon" class="text-red-600" [size]="20" />
+        </div>
+      </div>
+      <p class="text-3xl font-bold text-gray-900">{{ stats().urgent }}</p>
+      <p class="text-sm text-gray-600 mt-1">Urgent</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+    <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-gray-900">Recent Tasks</h2>
+      <a routerLink="/tasks" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+        View all →
+      </a>
+    </div>
+
+    @if (isLoading()) {
+      <div class="p-12 text-center text-gray-500">Loading...</div>
+    } @else if (recentTasks().length === 0) {
+      <div class="p-12 text-center text-gray-500">No tasks yet</div>
+    } @else {
+      <div class="divide-y divide-gray-100">
+        @for (task of recentTasks(); track task.id) {
+          <div class="p-4 hover:bg-gray-50 transition flex items-center gap-4">
+            <div [class]="statusColorClass(task.status)" class="w-2 h-2 rounded-full"></div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-gray-900 truncate">{{ task.title }}</p>
+              <p class="text-sm text-gray-500 truncate">{{ task.project.name }}</p>
+            </div>
+            <span [class]="priorityBadgeClass(task.priority)" class="text-xs font-medium px-2 py-1 rounded-full">
+              {{ task.priority }}
+            </span>
+            <span [class]="statusBadgeClass(task.status)" class="text-xs font-medium px-2 py-1 rounded-full">
+              {{ task.status }}
+            </span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
