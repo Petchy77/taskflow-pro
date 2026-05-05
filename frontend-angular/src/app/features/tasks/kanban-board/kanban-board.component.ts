@@ -1,10 +1,12 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
 import { ApiService } from '../../../core/services/api.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { WebSocketService } from '../../../core/services/websocket.service';
+import { Subscription } from 'rxjs';
 import { Task, TaskStatus } from '../../../core/models/task.model';
 import { TaskModalComponent } from '../../../shared/components/task-modal/task-modal.component';
 
@@ -14,9 +16,11 @@ import { TaskModalComponent } from '../../../shared/components/task-modal/task-m
   imports: [CommonModule, DragDropModule, LucideAngularModule, TaskModalComponent],
   templateUrl: './kanban-board.component.html'
 })
-export class KanbanBoardComponent implements OnInit {
+export class KanbanBoardComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private toastService = inject(ToastService);
+  private wsService = inject(WebSocketService);
+  private wsSubscription?: Subscription;
 
   protected PlusIcon = Plus;
 
@@ -31,6 +35,31 @@ export class KanbanBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTasks();
+    this.connectWebSocket();
+  }
+
+  ngOnDestroy(): void {
+    this.wsSubscription?.unsubscribe();
+  }
+
+  private connectWebSocket(): void {
+    this.wsService.connect();
+
+    this.wsSubscription = this.wsService.taskEvents$.subscribe(event => {
+      // Update task status in local state
+      this.allTasks.update(tasks =>
+        tasks.map(t =>
+          t.id === event.taskId
+            ? { ...t, status: event.newStatus as any }
+            : t
+        )
+      );
+
+      // Show notification
+      this.toastService.info(
+        `${event.username} moved "${event.taskTitle}" to ${event.newStatus.replace('_', ' ')}`
+      );
+    });
   }
 
   loadTasks(): void {

@@ -35,6 +35,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     @Transactional
     public TaskResponse create(CreateTaskRequest request, User currentUser) {
@@ -135,16 +136,29 @@ public class TaskService {
     @Transactional
     public TaskResponse updateStatus(Long id, TaskStatus newStatus, User currentUser) {
         Task task = getTaskAndCheckAccess(id, currentUser);
-        task.setStatus(newStatus);
+        TaskStatus oldStatus = task.getStatus();
 
+        task.setStatus(newStatus);
         if (newStatus == TaskStatus.DONE && task.getCompletedAt() == null) {
             task.setCompletedAt(LocalDateTime.now());
         } else if (newStatus != TaskStatus.DONE) {
             task.setCompletedAt(null);
         }
-
         Task saved = taskRepository.save(task);
         log.info("Updated task id={} status to {}", id, newStatus);
+
+        // Broadcast WebSocket event
+        com.taskflow.dto.event.TaskEvent event = com.taskflow.dto.event.TaskEvent.builder()
+                .type("STATUS_CHANGED")
+                .taskId(saved.getId())
+                .taskTitle(saved.getTitle())
+                .oldStatus(oldStatus.name())
+                .newStatus(newStatus.name())
+                .username(currentUser.getUsername())
+                .timestamp(LocalDateTime.now())
+                .build();
+        messagingTemplate.convertAndSend("/topic/tasks", event);
+
         return TaskMapper.toResponse(saved);
     }
 
