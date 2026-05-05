@@ -4,6 +4,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
 import { ApiService } from '../../../core/services/api.service';
+import { ToastService } from '../../../core/services/toast.service';
 import { Task, TaskStatus } from '../../../core/models/task.model';
 import { TaskModalComponent } from '../../../shared/components/task-modal/task-modal.component';
 
@@ -15,6 +16,7 @@ import { TaskModalComponent } from '../../../shared/components/task-modal/task-m
 })
 export class KanbanBoardComponent implements OnInit {
   private apiService = inject(ApiService);
+  private toastService = inject(ToastService);
 
   protected PlusIcon = Plus;
 
@@ -22,7 +24,6 @@ export class KanbanBoardComponent implements OnInit {
   isLoading = signal(true);
   isModalOpen = signal(false);
 
-  // Stable computed signals - one per column
   todoTasks = computed(() => this.allTasks().filter(t => t.status === 'TODO'));
   inProgressTasks = computed(() => this.allTasks().filter(t => t.status === 'IN_PROGRESS'));
   reviewTasks = computed(() => this.allTasks().filter(t => t.status === 'REVIEW'));
@@ -50,7 +51,6 @@ export class KanbanBoardComponent implements OnInit {
 
     const draggedTask = event.previousContainer.data[event.previousIndex];
 
-    // Only update if status actually changed
     if (draggedTask.status === targetStatus) {
       return;
     }
@@ -66,8 +66,11 @@ export class KanbanBoardComponent implements OnInit {
 
     // Sync to backend
     this.apiService.updateTaskStatus(draggedTask.id, targetStatus).subscribe({
+      next: () => {
+        this.toastService.success(`Moved to ${targetStatus.replace('_', ' ')}`);
+      },
       error: () => {
-        console.error('Failed to update status');
+        this.toastService.error('Failed to update task status');
         this.loadTasks();
       }
     });
