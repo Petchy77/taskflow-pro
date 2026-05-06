@@ -27,12 +27,10 @@ spring:
     open-in-view: false
 
   # Flyway (database migration)
+  # Flyway (database migration)
   flyway:
     enabled: true
     baseline-on-migrate: true
-    baseline-version: 0           # ← เพิ่ม
-    validate-on-migrate: false    # ← เพิ่ม
-    out-of-order: true            # ← เพิ่ม
     locations: classpath:db/migration
 
   # Redis
