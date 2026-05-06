@@ -44,6 +44,9 @@ class TaskServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
+
     @InjectMocks
     private TaskService taskService;
 
