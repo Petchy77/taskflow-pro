@@ -161,17 +161,13 @@ public class AdminService {
     }
 
     private void logAction(User user, String action, String targetType, Long targetId, String details) {
-        // Wrap details as JSON object for MySQL JSON column
-        String jsonDetails = String.format("{\"message\":\"%s\"}",
-        details.replace("\"", "\\\""));
-        
         AuditLog log = AuditLog.builder()
-        .user(user)
-        .action(action)
-        .targetType(targetType)
-        .targetId(targetId)
-        .details(jsonDetails)
-        .build();
+                .user(user)
+                .action(action)
+                .targetType(targetType)
+                .targetId(targetId)
+                .details(details)   // ← ตรงๆ ไม่ wrap JSON
+                .build();
         auditLogRepository.save(log);
     }
 }

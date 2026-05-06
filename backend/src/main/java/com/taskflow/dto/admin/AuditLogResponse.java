@@ -18,20 +18,13 @@ public class AuditLogResponse {
     private LocalDateTime createdAt;
 
     public static AuditLogResponse from(AuditLog log) {
-    String detailsText = log.getDetails();
-    // Extract message from JSON if it's JSON
-    if (detailsText != null && detailsText.startsWith("{\"message\":")) {
-        detailsText = detailsText.substring(12, detailsText.length() - 2)
-                .replace("\\\"", "\"");
-    }
-    
-    return AuditLogResponse.builder()
+        return AuditLogResponse.builder()
             .id(log.getId())
             .username(log.getUser() != null ? log.getUser().getUsername() : null)
             .action(log.getAction())
             .targetType(log.getTargetType())
             .targetId(log.getTargetId())
-            .details(detailsText)
+            .details(log.getDetails())
             .createdAt(log.getCreatedAt())
             .build();
     }

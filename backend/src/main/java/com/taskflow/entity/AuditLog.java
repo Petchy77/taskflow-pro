@@ -27,13 +27,13 @@ public class AuditLog {
     @Column(nullable = false, length = 50)
     private String action;  // USER_DELETED, ROLE_CHANGED, USER_DISABLED, etc.
 
-    @Column(name = "entity_type", nullable = false, length = 50)
+    @Column(name = "target_type", length = 50)
     private String targetType;
 
-    @Column(name = "entity_id")
+    @Column(name = "target_id")
     private Long targetId;
 
-    @Column(columnDefinition = "JSON")
+    @Column(length = 500)
     private String details;
 
     @Column(name = "ip_address", length = 45)
