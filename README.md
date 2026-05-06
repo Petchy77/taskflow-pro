@@ -1,6 +1,6 @@
 # 🚀 TaskFlow Pro
 
-> Production-ready, full-stack task management platform with real-time collaboration. Built to demonstrate enterprise-grade development practices across the complete software development lifecycle.
+> Production-ready, full-stack task management platform with real-time collaboration. Deployed on Railway + Vercel with complete CI/CD pipeline.
 
 [![Backend CI](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://www.java.com)
@@ -9,27 +9,44 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://www.mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue)](https://kubernetes.io/)
+[![Live](https://img.shields.io/badge/Live-Demo-success)](https://taskflow-pro-jet.vercel.app)
+
+---
 
 ## 🌐 Live Demo
 
-**Backend API:** [https://taskflow-pro-production-1415.up.railway.app/api](https://taskflow-pro-production-1415.up.railway.app/api)
+### 🎯 Try it now!
 
-**Health Check:** [/api/actuator/health](https://taskflow-pro-production-1415.up.railway.app/api/actuator/health)
+| Service | URL |
+|---------|-----|
+| 🌍 **Frontend (Vercel)** | **[taskflow-pro-jet.vercel.app](https://taskflow-pro-jet.vercel.app)** |
+| 🔌 **Backend API (Railway)** | [taskflow-pro-production-1415.up.railway.app/api](https://taskflow-pro-production-1415.up.railway.app/api) |
+| ❤️ **Health Check** | [/api/actuator/health](https://taskflow-pro-production-1415.up.railway.app/api/actuator/health) |
 
-### Try it out
+### 🔑 Demo Credentials
+
+| Username | Password   | Role  |
+|----------|------------|-------|
+| `petch`  | `petch123` | USER  |
+| `admin`  | `admin123` | ADMIN |
+
+### 🧪 Try the API
 
 ```bash
 # Login and get JWT
 curl -X POST https://taskflow-pro-production-1415.up.railway.app/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"petch","password":"petch123"}'
+
+# Health check
+curl https://taskflow-pro-production-1415.up.railway.app/api/actuator/health
 ```
 
-> Deployed on Railway with MySQL + Redis. Auto-deploys on `main` branch push.
+---
 
 ## 📋 Overview
 
-TaskFlow Pro is a complete full-stack task management platform with real-time collaboration features. The project demonstrates end-to-end software development practices: from database design and JWT-secured RESTful APIs to Angular frontend with drag-and-drop Kanban board, WebSocket real-time updates, comprehensive testing, and production-ready DevOps configuration.
+TaskFlow Pro is a complete full-stack task management platform with real-time collaboration features. The project demonstrates end-to-end software development practices: from database design and JWT-secured RESTful APIs to Angular frontend with drag-and-drop Kanban board, WebSocket real-time updates, comprehensive testing, and production cloud deployment.
 
 ## ✨ Key Features
 
@@ -41,6 +58,7 @@ TaskFlow Pro is a complete full-stack task management platform with real-time co
 - 📊 **Dashboard** — Live task statistics and recent activity
 - 💬 **Toast Notifications** — User-friendly feedback system
 - 📱 **Responsive UI** — Modern design with Tailwind CSS
+- ☁️ **Production Deployment** — Live on Railway (backend) + Vercel (frontend)
 
 ## 🛠️ Tech Stack
 
@@ -65,24 +83,27 @@ TaskFlow Pro is a complete full-stack task management platform with real-time co
 - **STOMP.js + SockJS** for WebSocket
 - **Lucide Angular** for icons
 
-### DevOps
+### DevOps & Cloud
 - **Docker** with multi-stage builds (250MB image)
 - **Docker Compose** for local development
 - **Kubernetes** manifests with HPA, StatefulSet, and Ingress
 - **GitHub Actions** for CI/CD pipeline
 - **JaCoCo** for code coverage analysis
+- **Railway** for backend cloud deployment
+- **Vercel** for frontend CDN deployment
 
 ## 🏗️ Architecture
 
 ```
 ┌──────────────────────────────────────────┐
-│  Angular SPA (Port 4200)                 │
+│  Angular SPA (Vercel CDN)                │
 │  • Login, Dashboard, Tasks, Kanban       │
 │  • WebSocket subscription                │
+│  taskflow-pro-jet.vercel.app             │
 └────────────┬─────────────────────────────┘
-             │ REST + WebSocket
+             │ HTTPS REST + WebSocket (CORS)
 ┌────────────▼─────────────────────────────┐
-│  Spring Boot API (Port 8080)             │
+│  Spring Boot API (Railway)               │
 │  • JWT Authentication                    │
 │  • Task & Project CRUD                   │
 │  • WebSocket broadcasting                │
@@ -92,26 +113,26 @@ TaskFlow Pro is a complete full-stack task management platform with real-time co
       │                          │
 ┌─────▼──────┐            ┌──────▼─────┐
 │  MySQL 8   │            │  Redis 7   │
-│  (3306)    │            │  (6379)    │
+│  (Railway) │            │  (Railway) │
 └────────────┘            └────────────┘
 ```
 
-## 🏃 Quick Start
+## 🏃 Quick Start (Local Development)
 
 ### Prerequisites
 - Docker & Docker Compose
-- Node.js 20+ (for frontend dev)
-- Java 21+ (for backend dev)
+- Node.js 20+
+- Java 21+
 - Maven 3.9+
 
-### Run Everything with Docker (Recommended)
+### Run Everything Locally
 
 ```bash
 # Clone repository
 git clone https://github.com/Petchy77/taskflow-pro.git
 cd taskflow-pro
 
-# Start all services (MySQL, Redis, Backend, phpMyAdmin)
+# Start backend services (MySQL, Redis, Backend, phpMyAdmin)
 docker compose up -d
 
 # Run frontend
@@ -120,17 +141,10 @@ npm install
 ng serve --port 4200
 ```
 
-**Access points:**
+**Local URLs:**
 - Frontend: http://localhost:4200
 - Backend API: http://localhost:8080/api
 - phpMyAdmin: http://localhost:8081
-
-### Default Credentials
-
-| Username | Password   | Role  |
-|----------|------------|-------|
-| `admin`  | `admin123` | ADMIN |
-| `petch`  | `petch123` | USER  |
 
 ## 📚 API Endpoints
 
@@ -179,11 +193,11 @@ ng serve --port 4200
 - [x] **Docker production builds (multi-stage, 250MB)**
 - [x] **Kubernetes deployment manifests**
 - [x] **GitHub Actions CI/CD pipeline**
+- [x] **🌐 Cloud deployment** (Railway backend + Vercel frontend)
 
 ### ⏳ Planned
 - [ ] React admin dashboard
 - [ ] Prometheus + Grafana monitoring
-- [ ] Cloud deployment (Railway/AWS)
 
 ## 🧪 Testing
 
@@ -233,6 +247,35 @@ kubectl port-forward -n taskflow svc/backend 8080:8080
 
 See [k8s/README.md](k8s/README.md) for detailed deployment guide.
 
+## ☁️ Cloud Deployment
+
+### Backend (Railway)
+
+1. Connect GitHub repo to Railway
+2. Set Root Directory: `backend`
+3. Add MySQL and Redis services
+4. Configure environment variables:
+   - `SPRING_DATASOURCE_URL`
+   - `SPRING_DATASOURCE_USERNAME`
+   - `SPRING_DATASOURCE_PASSWORD`
+   - `SPRING_DATA_REDIS_HOST`
+   - `SPRING_DATA_REDIS_PORT`
+   - `SPRING_DATA_REDIS_PASSWORD`
+   - `JWT_SECRET`
+5. Generate public domain in Settings → Networking
+
+Railway auto-deploys on every push to `main`.
+
+### Frontend (Vercel)
+
+1. Import GitHub repo to Vercel
+2. Set Root Directory: `frontend-angular`
+3. Build Command: `npm run build` (uses `--configuration production`)
+4. Output Directory: `dist/frontend-angular/browser`
+5. Update `environment.prod.ts` with production API URL
+
+Vercel auto-deploys on every push to `main`.
+
 ## 📁 Project Structure
 
 ```
@@ -279,6 +322,7 @@ taskflow-pro/
 This portfolio demonstrates:
 
 - **Full-stack expertise** — Backend (Spring Boot) + Frontend (Angular) + Database (MySQL)
+- **Production cloud deployment** — Railway + Vercel with auto-deploy CI/CD
 - **Modern Java practices** — Records, Optional, Stream API, Lombok
 - **Security best practices** — JWT, BCrypt, CORS, SQL injection prevention
 - **Test-driven development** — JUnit 5, Mockito, AssertJ with high coverage
@@ -286,6 +330,7 @@ This portfolio demonstrates:
 - **Real-time systems** — WebSocket with STOMP for collaborative updates
 - **Modern frontend patterns** — Standalone components, Signals, Functional guards
 - **Clean architecture** — Layered design with clear separation of concerns
+- **End-to-end ownership** — From database design to live production URL
 
 ## 👤 Author
 
@@ -294,6 +339,8 @@ This portfolio demonstrates:
 Full-Stack Developer | Bangkok, Thailand
 
 🔗 [GitHub: @Petchy77](https://github.com/Petchy77)
+
+🌐 [Live Demo](https://taskflow-pro-jet.vercel.app)
 
 ---
 
