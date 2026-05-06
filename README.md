@@ -1,11 +1,13 @@
 # 🚀 TaskFlow Pro
 
-> Production-ready, full-stack task management platform with real-time collaboration. Deployed on Railway + Vercel with complete CI/CD pipeline.
+> Production-ready, full-stack task management platform with **dual frontends** (Angular for users, React for admins) + real-time collaboration. Deployed on Railway + Vercel with complete CI/CD pipeline.
 
 [![Backend CI](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Petchy77/taskflow-pro/actions/workflows/backend-ci.yml)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://www.java.com)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0-brightgreen)](https://spring.io/projects/spring-boot)
 [![Angular](https://img.shields.io/badge/Angular-18-red)](https://angular.dev)
+[![React](https://img.shields.io/badge/React-18-61dafb)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)](https://www.typescriptlang.org)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://www.mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue)](https://kubernetes.io/)
@@ -15,20 +17,21 @@
 
 ## 🌐 Live Demo
 
-### 🎯 Try it now!
+### 🎯 Three Production URLs
 
-| Service | URL |
-|---------|-----|
-| 🌍 **Frontend (Vercel)** | **[taskflow-pro-jet.vercel.app](https://taskflow-pro-jet.vercel.app)** |
-| 🔌 **Backend API (Railway)** | [taskflow-pro-production-1415.up.railway.app/api](https://taskflow-pro-production-1415.up.railway.app/api) |
-| ❤️ **Health Check** | [/api/actuator/health](https://taskflow-pro-production-1415.up.railway.app/api/actuator/health) |
+| Service | URL | Stack |
+|---------|-----|-------|
+| 🌍 **User App** | **[taskflow-pro-jet.vercel.app](https://taskflow-pro-jet.vercel.app)** | Angular 18 |
+| 🛡️ **Admin Dashboard** | **[taskflow-pro-8yjp.vercel.app](https://taskflow-pro-8yjp.vercel.app)** | React 18 |
+| 🔌 **Backend API** | [taskflow-pro-production-1415.up.railway.app/api](https://taskflow-pro-production-1415.up.railway.app/api) | Spring Boot 4 |
+| ❤️ **Health Check** | [/api/actuator/health](https://taskflow-pro-production-1415.up.railway.app/api/actuator/health) | Actuator |
 
 ### 🔑 Demo Credentials
 
-| Username | Password   | Role  |
-|----------|------------|-------|
-| `petch`  | `petch123` | USER  |
-| `admin`  | `admin123` | ADMIN |
+| Username | Password   | Role  | App                       |
+|----------|------------|-------|---------------------------|
+| `petch`  | `petch123` | USER  | User App (Angular)        |
+| `admin`  | `admin123` | ADMIN | Admin Dashboard (React)   |
 
 ### 🧪 Try the API
 
@@ -46,75 +49,107 @@ curl https://taskflow-pro-production-1415.up.railway.app/api/actuator/health
 
 ## 📋 Overview
 
-TaskFlow Pro is a complete full-stack task management platform with real-time collaboration features. The project demonstrates end-to-end software development practices: from database design and JWT-secured RESTful APIs to Angular frontend with drag-and-drop Kanban board, WebSocket real-time updates, comprehensive testing, and production cloud deployment.
+TaskFlow Pro is a **complete enterprise-grade task management platform** demonstrating end-to-end software development. It features two separate frontend applications (Angular for end-users, React for administrators) sharing a single Spring Boot backend with role-based access control. The project covers JWT authentication, real-time WebSocket updates, audit logging, comprehensive testing, and multi-cloud production deployment.
 
 ## ✨ Key Features
 
-- 🔐 **JWT Authentication** with BCrypt password hashing and role-based access (USER/ADMIN)
-- 📋 **Task Management** — Create, update, delete tasks with project assignment
-- 🎯 **Kanban Board** with HTML5 drag-and-drop status updates
-- 🔔 **Real-time Notifications** — WebSocket broadcasting for collaborative updates
-- 🔍 **Advanced Filtering** — JPA Specification API for dynamic queries
-- 📊 **Dashboard** — Live task statistics and recent activity
-- 💬 **Toast Notifications** — User-friendly feedback system
-- 📱 **Responsive UI** — Modern design with Tailwind CSS
-- ☁️ **Production Deployment** — Live on Railway (backend) + Vercel (frontend)
+### 🌍 User App (Angular)
+- 🔐 JWT authentication with role-based access
+- 📋 Task & project CRUD with assignment
+- 🎯 Drag-and-drop Kanban board (HTML5 DnD)
+- 🔔 Real-time notifications via WebSocket
+- 🔍 Advanced filtering with JPA Specification
+- 📊 Dashboard with live statistics
+- 💬 Toast notification system
+- 📱 Responsive design with Tailwind CSS
+
+### 🛡️ Admin Dashboard (React)
+- 📊 KPI dashboard with Recharts visualizations
+- 👥 User management (role/status/delete with confirmation)
+- 📈 Task analytics with completion metrics & priority distribution
+- 📜 **Audit log** for all admin actions (enterprise compliance)
+- ⚙️ System settings & info display
+- 🔒 Admin-only protected routes
+
+### 🔌 Backend API (Spring Boot)
+- 🛡️ JWT authentication (HS384) with BCrypt password hashing
+- 👮 Role-based authorization (`@PreAuthorize`)
+- 📡 WebSocket broadcasting (STOMP protocol)
+- 🗄️ Flyway database migration
+- 📝 Audit trail for admin actions
+- 🌐 CORS configured for multi-origin SPAs
+- ⚠️ Global exception handling
+- ✅ Bean Validation with detailed error messages
 
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Java 21** with Spring Boot 3.3
-- **Spring Security** with JWT authentication (HS384)
+- **Java 21** + **Spring Boot 4.0**
+- **Spring Security** with JWT (HS384) + `@PreAuthorize`
 - **Spring Data JPA** with Hibernate ORM
 - **Spring WebSocket** with STOMP protocol
 - **Flyway** for database migration
-- **MySQL 8** as primary database
-- **Redis 7** for caching
-- **JUnit 5 + Mockito + AssertJ** for testing
-- **Maven** for build management
+- **MySQL 8** primary database
+- **Redis 7** caching layer
+- **JUnit 5 + Mockito + AssertJ** testing
+- **Maven** build management
 - **Lombok** for boilerplate reduction
 
-### Frontend
+### User App (Angular)
 - **Angular 18** with standalone components
-- **TypeScript 5.5** with strict mode
-- **Tailwind CSS 3** for styling
-- **RxJS 7** for reactive programming
-- **Signal-based state management**
+- **TypeScript 5.5** strict mode
+- **Tailwind CSS 3** styling
+- **RxJS 7** reactive programming
+- Signal-based state management
 - **STOMP.js + SockJS** for WebSocket
-- **Lucide Angular** for icons
+- Lucide Angular icons
+
+### Admin Dashboard (React)
+- **React 18** + **TypeScript** + **Vite 6**
+- **React Router 7** for routing
+- **Tailwind CSS 3** styling
+- **Recharts** for data visualization
+- **Axios** with interceptors for JWT
+- **Lucide React** icons
+- **date-fns** for timestamps
 
 ### DevOps & Cloud
-- **Docker** with multi-stage builds (250MB image)
+- **Docker** multi-stage builds (~250MB image)
 - **Docker Compose** for local development
-- **Kubernetes** manifests with HPA, StatefulSet, and Ingress
-- **GitHub Actions** for CI/CD pipeline
-- **JaCoCo** for code coverage analysis
-- **Railway** for backend cloud deployment
-- **Vercel** for frontend CDN deployment
+- **Kubernetes** manifests with HPA, StatefulSet, Ingress
+- **GitHub Actions** CI/CD pipelines
+- **JaCoCo** code coverage analysis
+- **Railway** backend cloud deployment
+- **Vercel** dual frontend CDN deployment
 
 ## 🏗️ Architecture
 
 ```
-┌──────────────────────────────────────────┐
-│  Angular SPA (Vercel CDN)                │
-│  • Login, Dashboard, Tasks, Kanban       │
-│  • WebSocket subscription                │
-│  taskflow-pro-jet.vercel.app             │
-└────────────┬─────────────────────────────┘
-             │ HTTPS REST + WebSocket (CORS)
-┌────────────▼─────────────────────────────┐
-│  Spring Boot API (Railway)               │
-│  • JWT Authentication                    │
-│  • Task & Project CRUD                   │
-│  • WebSocket broadcasting                │
-│  • Bean Validation                       │
-│  • Global Exception Handler              │
-└─────┬──────────────────────────┬─────────┘
-      │                          │
-┌─────▼──────┐            ┌──────▼─────┐
-│  MySQL 8   │            │  Redis 7   │
-│  (Railway) │            │  (Railway) │
-└────────────┘            └────────────┘
+┌─────────────────────────────┐  ┌─────────────────────────────┐
+│  USER APP (Angular)         │  │  ADMIN DASHBOARD (React)    │
+│  • Login, Tasks, Kanban     │  │  • Users, Audit, Analytics  │
+│  • WebSocket subscription   │  │  • Charts (Recharts)        │
+│  taskflow-pro-jet           │  │  taskflow-pro-8yjp          │
+│       .vercel.app           │  │       .vercel.app           │
+└─────────────┬───────────────┘  └─────────────┬───────────────┘
+              │                                 │
+              └────────────┬────────────────────┘
+                           │ HTTPS REST + WebSocket (CORS)
+              ┌────────────▼─────────────────────────────┐
+              │  Spring Boot 4 API (Railway)             │
+              │  • JWT Authentication (HS384)            │
+              │  • Role-Based Authorization              │
+              │  • Task & Project CRUD                   │
+              │  • Admin endpoints (@PreAuthorize)       │
+              │  • WebSocket broadcasting (STOMP)        │
+              │  • Audit logging                         │
+              │  • Bean Validation + Global Exceptions   │
+              └─────┬──────────────────────────┬─────────┘
+                    │                          │
+              ┌─────▼──────┐            ┌──────▼─────┐
+              │  MySQL 8   │            │  Redis 7   │
+              │  (Railway) │            │  (Railway) │
+              └────────────┘            └────────────┘
 ```
 
 ## 🏃 Quick Start (Local Development)
@@ -132,19 +167,25 @@ TaskFlow Pro is a complete full-stack task management platform with real-time co
 git clone https://github.com/Petchy77/taskflow-pro.git
 cd taskflow-pro
 
-# Start backend services (MySQL, Redis, Backend, phpMyAdmin)
+# Start backend services (MySQL, Redis, phpMyAdmin)
 docker compose up -d
 
-# Run frontend
+# Run user app (Angular)
 cd frontend-angular
 npm install
 ng serve --port 4200
+
+# In another terminal: Run admin dashboard (React)
+cd ../admin-react
+npm install
+npm run dev    # runs on port 5173
 ```
 
 **Local URLs:**
-- Frontend: http://localhost:4200
-- Backend API: http://localhost:8080/api
-- phpMyAdmin: http://localhost:8081
+- 🌍 User App: http://localhost:4200
+- 🛡️ Admin Dashboard: http://localhost:5173
+- 🔌 Backend API: http://localhost:8080/api
+- 🗄️ phpMyAdmin: http://localhost:8081
 
 ## 📚 API Endpoints
 
@@ -165,12 +206,20 @@ ng serve --port 4200
 - `POST   /api/tasks` — Create new task
 - `GET    /api/tasks/{id}` — Get task details
 - `PUT    /api/tasks/{id}` — Update task
-- `PATCH  /api/tasks/{id}/status` — Update task status (broadcasts WebSocket event)
+- `PATCH  /api/tasks/{id}/status` — Update status (broadcasts WebSocket event)
 - `DELETE /api/tasks/{id}` — Delete task
+
+### Admin (requires ADMIN role)
+- `GET    /api/admin/stats` — System statistics (users, projects, tasks, completion)
+- `GET    /api/admin/users` — List all users with task counts
+- `PATCH  /api/admin/users/{id}/role` — Update user role (USER ↔ ADMIN)
+- `PATCH  /api/admin/users/{id}/toggle` — Enable/disable user
+- `DELETE /api/admin/users/{id}` — Delete user (cannot delete self)
+- `GET    /api/admin/audit-logs` — Paginated audit log
 
 ### WebSocket
 - `WS /api/ws` — STOMP endpoint
-- Subscribe `/topic/tasks` — Receive real-time task updates
+- Subscribe `/topic/tasks` — Real-time task updates
 
 ## ✅ Implementation Status
 
@@ -179,25 +228,27 @@ ng serve --port 4200
 - [x] JWT-based stateless authentication (HS384)
 - [x] Role-based access control (USER/ADMIN)
 - [x] Project and Task CRUD APIs
-- [x] Pagination, sorting, and filtering with JPA Specification
+- [x] Pagination, sorting, filtering with JPA Specification
 - [x] Bean validation with detailed error messages
 - [x] Global exception handling
-- [x] CORS configuration for SPA clients
+- [x] CORS configuration for multi-origin SPAs
 - [x] Database migration with Flyway
-- [x] Sample data seeding for development
-- [x] **Real-time notifications via WebSocket**
-- [x] **Angular 18 frontend** (Login, Dashboard, Tasks, Kanban)
+- [x] Sample data seeding
+- [x] **Real-time notifications via WebSocket (STOMP)**
+- [x] **Angular 18 user app** (Login, Dashboard, Tasks, Kanban)
+- [x] **React 18 admin dashboard** (Users, Analytics, Audit Logs, Settings)
 - [x] **HTML5 drag-and-drop Kanban board**
 - [x] **Toast notification system**
+- [x] **Audit logging for admin actions**
 - [x] **30 unit tests with 78% service coverage**
-- [x] **Docker production builds (multi-stage, 250MB)**
+- [x] **Docker production builds (multi-stage, ~250MB)**
 - [x] **Kubernetes deployment manifests**
 - [x] **GitHub Actions CI/CD pipeline**
-- [x] **🌐 Cloud deployment** (Railway backend + Vercel frontend)
+- [x] **🌐 Three-tier cloud deployment** (Railway + Vercel × 2)
 
 ### ⏳ Planned
-- [ ] React admin dashboard
 - [ ] Prometheus + Grafana monitoring
+- [ ] E2E tests with Playwright
 
 ## 🧪 Testing
 
@@ -254,83 +305,81 @@ See [k8s/README.md](k8s/README.md) for detailed deployment guide.
 1. Connect GitHub repo to Railway
 2. Set Root Directory: `backend`
 3. Add MySQL and Redis services
-4. Configure environment variables:
-   - `SPRING_DATASOURCE_URL`
-   - `SPRING_DATASOURCE_USERNAME`
-   - `SPRING_DATASOURCE_PASSWORD`
-   - `SPRING_DATA_REDIS_HOST`
-   - `SPRING_DATA_REDIS_PORT`
-   - `SPRING_DATA_REDIS_PASSWORD`
-   - `JWT_SECRET`
+4. Configure environment variables (auto-injected via `${{MySQL.MYSQL_URL}}` pattern)
 5. Generate public domain in Settings → Networking
 
 Railway auto-deploys on every push to `main`.
 
-### Frontend (Vercel)
+### User App (Vercel — taskflow-pro-jet)
 
 1. Import GitHub repo to Vercel
 2. Set Root Directory: `frontend-angular`
-3. Build Command: `npm run build` (uses `--configuration production`)
+3. Build Command: `ng build --configuration production`
 4. Output Directory: `dist/frontend-angular/browser`
-5. Update `environment.prod.ts` with production API URL
+5. Configure `environment.prod.ts` with backend URL
 
-Vercel auto-deploys on every push to `main`.
+### Admin Dashboard (Vercel — taskflow-pro-8yjp)
+
+1. Import same GitHub repo as separate project
+2. Set Root Directory: `admin-react`
+3. Framework Preset: Vite (auto-detected)
+4. Add env var: `VITE_API_URL=https://taskflow-pro-production-1415.up.railway.app/api`
+
+Both Vercel projects auto-deploy on every push to `main`.
 
 ## 📁 Project Structure
 
 ```
 taskflow-pro/
-├── backend/                      # Spring Boot application
+├── backend/                       # Spring Boot 4 API
 │   ├── src/main/java/com/taskflow/
-│   │   ├── config/               # Security, WebSocket, CORS
-│   │   ├── controller/           # REST endpoints
-│   │   ├── dto/                  # Request/Response DTOs + Events
-│   │   ├── entity/               # JPA entities
-│   │   ├── exception/            # Custom exceptions
-│   │   ├── mapper/               # DTO mappers
-│   │   ├── repository/           # JPA repositories
-│   │   ├── security/             # JWT components
-│   │   └── service/              # Business logic
-│   ├── src/test/java/            # Unit tests (30 tests)
+│   │   ├── config/                # Security, WebSocket, CORS
+│   │   ├── controller/            # REST endpoints (incl. AdminController)
+│   │   ├── dto/                   # Request/Response DTOs (incl. admin/)
+│   │   ├── entity/                # JPA entities (incl. AuditLog)
+│   │   ├── exception/             # Custom exceptions
+│   │   ├── mapper/                # DTO mappers
+│   │   ├── repository/            # JPA repositories
+│   │   ├── security/              # JWT components
+│   │   └── service/               # Business logic (incl. AdminService)
+│   ├── src/test/java/             # Unit tests (30 tests)
 │   ├── src/main/resources/
-│   │   ├── db/migration/         # Flyway SQL scripts
-│   │   └── application.yml       # Configuration
-│   └── Dockerfile                # Multi-stage build
-├── frontend-angular/             # Angular 18 SPA
+│   │   ├── db/migration/          # Flyway SQL scripts
+│   │   └── application.yml        # Configuration
+│   └── Dockerfile                 # Multi-stage build
+├── frontend-angular/              # Angular 18 user app
 │   └── src/app/
-│       ├── core/
-│       │   ├── guards/           # Auth guards
-│       │   ├── interceptors/     # JWT interceptor
-│       │   ├── models/           # TypeScript interfaces
-│       │   └── services/         # Auth, API, WebSocket, Toast
-│       ├── features/
-│       │   ├── auth/login/       # Login page
-│       │   ├── dashboard/        # Stats overview
-│       │   └── tasks/
-│       │       ├── task-list/    # Filterable list view
-│       │       └── kanban-board/ # Drag-and-drop board
-│       └── shared/
-│           ├── components/       # Reusable components
-│           └── layout/           # App layout
-├── k8s/                          # Kubernetes manifests
-├── .github/workflows/            # CI/CD pipelines
-└── docker-compose.yml            # Dev infrastructure
+│       ├── core/                  # Guards, interceptors, services
+│       ├── features/              # Login, Dashboard, Tasks, Kanban
+│       └── shared/                # Reusable components & layout
+├── admin-react/                   # React 18 admin dashboard
+│   └── src/
+│       ├── components/            # AdminLayout, ProtectedRoute
+│       ├── contexts/              # AuthContext
+│       ├── pages/                 # Login, Dashboard, Users, Analytics,
+│       │                          #   AuditLogs, Settings
+│       ├── services/              # api.ts, adminService.ts
+│       └── types/                 # TypeScript interfaces
+├── k8s/                           # Kubernetes manifests
+├── .github/workflows/             # CI/CD pipelines
+└── docker-compose.yml             # Dev infrastructure
 ```
 
 ## 🎯 Highlights for Recruiters
 
 This portfolio demonstrates:
 
-- **Full-stack expertise** — Backend (Spring Boot) + Frontend (Angular) + Database (MySQL)
-- **Production cloud deployment** — Railway + Vercel with auto-deploy CI/CD
-- **Modern Java practices** — Records, Optional, Stream API, Lombok
-- **Security best practices** — JWT, BCrypt, CORS, SQL injection prevention
-- **Test-driven development** — JUnit 5, Mockito, AssertJ with high coverage
-- **DevOps fluency** — Docker multi-stage, Kubernetes manifests, CI/CD
+- **Full-stack expertise across two frameworks** — Spring Boot (Java) + Angular (TS) + React (TS)
+- **Production cloud deployment** — Three live URLs on Railway + Vercel with auto-deploy CI/CD
+- **Enterprise patterns** — JWT, role-based authorization, audit logging, CORS, Flyway migrations
+- **Modern Java practices** — Records, Optional, Stream API, `@PreAuthorize`
+- **Security best practices** — JWT (HS384), BCrypt, role-based access, SQL injection prevention
+- **Test-driven development** — JUnit 5, Mockito, AssertJ with high service coverage
+- **DevOps fluency** — Docker multi-stage, Kubernetes manifests, GitHub Actions CI/CD
 - **Real-time systems** — WebSocket with STOMP for collaborative updates
-- **Modern frontend patterns** — Standalone components, Signals, Functional guards
+- **Modern frontend patterns** — Standalone Angular components + React functional components with hooks
 - **Clean architecture** — Layered design with clear separation of concerns
-- **End-to-end ownership** — From database design to live production URL
+- **End-to-end ownership** — From database design to three live production URLs
 
 ## 👤 Author
 
@@ -340,7 +389,7 @@ Full-Stack Developer | Bangkok, Thailand
 
 🔗 [GitHub: @Petchy77](https://github.com/Petchy77)
 
-🌐 [Live Demo](https://taskflow-pro-jet.vercel.app)
+🌐 [User App](https://taskflow-pro-jet.vercel.app) | 🛡️ [Admin Dashboard](https://taskflow-pro-8yjp.vercel.app)
 
 ---
 
