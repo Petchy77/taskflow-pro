@@ -10,6 +10,23 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue)](https://kubernetes.io/)
 
+## 🌐 Live Demo
+
+**Backend API:** [https://taskflow-pro-production-1415.up.railway.app/api](https://taskflow-pro-production-1415.up.railway.app/api)
+
+**Health Check:** [/api/actuator/health](https://taskflow-pro-production-1415.up.railway.app/api/actuator/health)
+
+### Try it out
+
+```bash
+# Login and get JWT
+curl -X POST https://taskflow-pro-production-1415.up.railway.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"petch","password":"petch123"}'
+```
+
+> Deployed on Railway with MySQL + Redis. Auto-deploys on `main` branch push.
+
 ## 📋 Overview
 
 TaskFlow Pro is a complete full-stack task management platform with real-time collaboration features. The project demonstrates end-to-end software development practices: from database design and JWT-secured RESTful APIs to Angular frontend with drag-and-drop Kanban board, WebSocket real-time updates, comprehensive testing, and production-ready DevOps configuration.
