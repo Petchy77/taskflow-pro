@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Observable, Subject } from 'rxjs';
@@ -24,7 +25,7 @@ export class WebSocketService {
     if (this.client?.connected) return;
 
     this.client = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/api/ws') as any,
+      webSocketFactory: () => new SockJS(environment.wsUrl) as any,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
