@@ -18,7 +18,7 @@ spring:
   # JPA / Hibernate
   jpa:
     hibernate:
-      ddl-auto: validate    # ใช้ Flyway แทน ไม่ให้ Hibernate สร้าง table เอง
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
