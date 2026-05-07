@@ -49,15 +49,24 @@ server:
     include-message: always
     include-binding-errors: always
 
-# Actuator (สำหรับ monitoring)
+# Actuator + Prometheus monitoring
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus
+        include: health,info,prometheus,metrics
   endpoint:
     health:
       show-details: always
+    prometheus:
+      access: unrestricted
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 # JWT config
 app:
